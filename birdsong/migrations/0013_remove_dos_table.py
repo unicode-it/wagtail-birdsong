@@ -10,7 +10,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.DeleteModel(
-            model_name='DoubleOptInSettings',
-        ),
+        migrations.DeleteModel('DoubleOptInSettings'),
     ]
