@@ -143,6 +143,19 @@ You can override the default ``Contact`` model by setting an option on the admin
         list_diplay = ('email', 'first_name', 'last_name', 'location')
 
 
+``base.py``
+
+.. code-block:: python
+
+    # You may want to redefine the test contact (used in previews) with your new ExtendedContact fields
+    BIRDSONG_TEST_CONTACT = {
+        'first_name': 'Wagtail',
+        'last_name': 'Birdsong',
+        'email': 'wagtail.birdsong@example.com',
+        'location': 'us',
+    }
+
+
 Filtering on contact properties
 ===============================
 
@@ -231,19 +244,34 @@ Included in birdsong is a basic way for contacts to unsubscribe, just include th
     </mj-section>
     {% endblock email_body %}
 
+Birdsong settings 
+=================
+
+
+The website's admin can set settings with regard to
+
+- redirects
+- double opt-in 
+
+If a redirect is set, the original template will not be used anymore.
+
+
+.. image:: docs/birdsong-settings.png
+    :width: 900
+    :alt: Screenshot
 
 Double opt in
 =============
 
-The double opt in feature can be enabled.
+For security reasons it is better if a double opt-in is used for subscription. 
+It assures sending the campaign only to people who agreed to it and follows the regulations of EU's GDPR. 
+The double opt-in feature can be enabled in 'Birdsong settings' in the admin menu. 
+The subscribing person will receive an e-mail with a link for confirmation. 
+Unconfirmed contacts older than a week are deleted, when a campaign is saved, so when creating, editing or copying.
 
-``setting.py``
 
-.. code-block:: python
-
-    BIRDSONG_DOUBLE_OPT_IN_ENABLED=True
-
-Note that previously saved contacts will not be used when sending a campaign anymore. This can be reverted.
+**!! Warning !!** 
+By enabling this feature without garantueeing that field ``is_confirmed`` is ``True`` of the old contacts, the ones who are older than a week will be deleted when campaign saving is triggered!
 
 Future features:
 ----------------
@@ -253,3 +281,4 @@ Future features:
 - Backends other thans SMTP for sending emails so analytics can be gathered (email opened, bounced etc)
 - Reloading the preview on edit
 - Broader permissions for campaigns (send, preview, test send)
+spot

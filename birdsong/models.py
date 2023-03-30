@@ -7,7 +7,7 @@ from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
 from taggit.models import TaggedItemBase
-from wagtail.admin.edit_handlers import FieldPanel
+from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel
 from wagtail.contrib.settings.models import (BaseGenericSetting,
                                              register_setting)
 from wagtail.core.fields import RichTextField
@@ -107,17 +107,27 @@ class Receipt(models.Model):
 
 
 @register_setting
-class DoubleOptInSettings(BaseGenericSetting):
+class BirdsongSettings(BaseGenericSetting):
     class Meta:
-        verbose_name = gettext("Double opt-in settings")
+        verbose_name = gettext("Birdsong settings")
+
+    double_opt_in_enabled = models.BooleanField(
+        default=False,
+        verbose_name=_("Enable double opt-in"),
+        help_text=_(
+            "Attention: By enabling this, unconfirmed contacts older than a week get deleted when creating, editing or copying a campaign. Contacts are unconfirmed by default."
+        ),
+    )
 
     confirmation_email_subject = models.CharField(
+        null=True,
         max_length=150,
         verbose_name=gettext("Subject of confirmation e-mail"),
         default=gettext("Confirm newsletter registration"),
     )
 
     confirmation_email_body = RichTextField(
+        null=True,
         features=[
             "h2",
             "bold",
@@ -142,6 +152,7 @@ class DoubleOptInSettings(BaseGenericSetting):
         on_delete=models.SET_NULL,
         related_name="+",
         verbose_name=gettext("Redirect page after confirmation of campaign signup"),
+        blank=True,
     )
     campaign_signup_redirect = models.ForeignKey(
         "wagtailcore.Page",
@@ -149,6 +160,7 @@ class DoubleOptInSettings(BaseGenericSetting):
         on_delete=models.SET_NULL,
         related_name="+",
         verbose_name=gettext("Redirect page after signup for a campaign"),
+        blank=True,
     )
     campaign_unsubscribe_success = models.ForeignKey(
         "wagtailcore.Page",
@@ -156,12 +168,24 @@ class DoubleOptInSettings(BaseGenericSetting):
         on_delete=models.SET_NULL,
         related_name="+",
         verbose_name=gettext("Success page for unsubscription"),
+        blank=True,
     )
 
     panels = [
-        FieldPanel("campaign_signup_redirect"),
-        FieldPanel("campaign_confirmation_redirect"),
-        FieldPanel("campaign_unsubscribe_success"),
-        FieldPanel("confirmation_email_subject"),
-        FieldPanel("confirmation_email_body"),
+        MultiFieldPanel(
+            [
+                FieldPanel("campaign_signup_redirect"),
+                FieldPanel("campaign_confirmation_redirect"),
+                FieldPanel("campaign_unsubscribe_success")
+            ],
+            heading=(gettext("Redirects")),
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("double_opt_in_enabled"),
+                FieldPanel("confirmation_email_subject"),
+                FieldPanel("confirmation_email_body")
+            ],
+            heading=(gettext("Double opt-in settings")))
+
     ]

@@ -1,3 +1,3 @@
 from django.conf import settings
 
-BIRDSONG_DOUBLE_OPT_IN_ENABLED = getattr(settings, 'BIRDSONG_DOUBLE_OPT_IN_ENABLED', False)
+BIRDSONG_TEST_CONTACT = getattr(settings, 'BIRDSONG_TEST_CONTACT', { 'email': 'wagtail.birdsong@example.com' })
