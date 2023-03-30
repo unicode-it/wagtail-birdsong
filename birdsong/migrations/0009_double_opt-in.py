@@ -15,25 +15,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterModelOptions(
-            name='contact',
-            options={'verbose_name': 'Contact', 'verbose_name_plural': 'Contacts'},
-        ),
-        migrations.AlterField(
-            model_name='contact',
-            name='confirmed_at',
-            field=models.DateTimeField(null=True, verbose_name='confirmed at'),
-        ),
-        migrations.AlterField(
-            model_name='contact',
-            name='created_at',
-            field=models.DateTimeField(auto_now_add=True, verbose_name='created at'),
-        ),
-        migrations.AlterField(
-            model_name='contact',
-            name='is_confirmed',
-            field=models.BooleanField(default=False, verbose_name='is confirmed'),
-        ),
         migrations.CreateModel(
             name='BirdsongSettings',
             fields=[
