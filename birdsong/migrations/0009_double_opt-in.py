@@ -19,26 +19,20 @@ class Migration(migrations.Migration):
             name='contact',
             options={'verbose_name': 'Contact', 'verbose_name_plural': 'Contacts'},
         ),
-        migrations.AddField(
+        migrations.AlterField(
             model_name='contact',
             name='confirmed_at',
             field=models.DateTimeField(null=True, verbose_name='confirmed at'),
         ),
-        migrations.AddField(
+        migrations.AlterField(
             model_name='contact',
             name='created_at',
-            field=models.DateTimeField(auto_now_add=True, default=django.utils.timezone.now, verbose_name='created at'),
-            preserve_default=False,
+            field=models.DateTimeField(auto_now_add=True, verbose_name='created at'),
         ),
-        migrations.AddField(
+        migrations.AlterField(
             model_name='contact',
             name='is_confirmed',
             field=models.BooleanField(default=False, verbose_name='is confirmed'),
-        ),
-        migrations.AddField(
-            model_name='contact',
-            name='token',
-            field=models.UUIDField(default=uuid.uuid4, editable=False),
         ),
         migrations.CreateModel(
             name='BirdsongSettings',
