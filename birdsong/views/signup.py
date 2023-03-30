@@ -17,17 +17,18 @@ class SignUpView(FormView):
     contact_model = Contact
 
     def form_valid(self, form):
-        if BIRDSONG_DOUBLE_OPT_IN_ENABLED == True: 
+        if BIRDSONG_DOUBLE_OPT_IN_ENABLED:
             from birdsong.options import BIRDSONG_DEFAULT_BACKEND
 
-            double_opt_in_settings = DoubleOptInSettings.load(request_or_site=self.request)
-            contact, created = self.contact_model.objects.get_or_create(email=form.cleaned_data["email"])
+            double_opt_in_settings = DoubleOptInSettings.load(
+                request_or_site=self.request
+            )
+            contact, created = self.contact_model.objects.get_or_create(
+                email=form.cleaned_data["email"]
+            )
 
             site = Site.find_for_request(self.request)
-            url = (
-                site.root_url
-                + reverse("birdsong:confirm", args=[contact.token])
-            )
+            url = site.root_url + reverse("birdsong:confirm", args=[contact.token])
 
             backend_class = import_string(
                 getattr(settings, "BIRDSONG_BACKEND", BIRDSONG_DEFAULT_BACKEND)
