@@ -36,4 +36,17 @@ class Migration(migrations.Migration):
             name='token',
             field=models.UUIDField(default=uuid.uuid4, editable=False),
         ),
+        migrations.CreateModel(
+            name='DoubleOptInSettings',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('confirmation_email_subject', models.CharField(default='Confirm newsletter registration', max_length=150, verbose_name='Subject of confirmation e-mail')),
+                ('confirmation_email_body', wagtail.fields.RichTextField(default='Click the following link if you want register             for our newsletter. Otherwise no action is neccessary.', help_text='This Text is part of the e-mail that             is sent after registration for a campaign.', verbose_name='Content of confirmation e-mail')),
+                ('campaign_confirmation_redirect', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to='wagtailcore.page', verbose_name='Redirect page after confirmation of campaign signup')),
+                ('campaign_signup_redirect', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to='wagtailcore.page', verbose_name='Redirect page after signup for a campaign')),
+            ],
+            options={
+                'verbose_name': 'Double opt-in settings',
+            },
+        ),
     ]
